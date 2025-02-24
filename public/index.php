@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 use App\Handler\SendEmailHandler;
+use Asgrim\MiniMezzio\AppFactory;
+use Dotenv\Dotenv;
 use Laminas\ConfigAggregator\ConfigAggregator;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\ServiceManager\ServiceManager;
-use Asgrim\MiniMezzio\AppFactory;
+use Mezzio\ConfigProvider;
 use Mezzio\Router\FastRouteRouter;
 use Mezzio\Router\Middleware\DispatchMiddleware;
 use Mezzio\Router\Middleware\ImplicitHeadMiddleware;
@@ -17,17 +19,17 @@ use Mezzio\Router\RouterInterface;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../");
+$dotenv = Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
 $dotenv->required([
     "SENDGRID_API_KEY",
 ]);
 
-$aggregateConfig = (new ConfigAggregator([
-    \Mezzio\ConfigProvider::class,
+$aggregateConfig                    = (new ConfigAggregator([
+    ConfigProvider::class,
     \Mezzio\Router\ConfigProvider::class,
 ]))->getMergedConfig();
-$dependencies = $aggregateConfig["dependencies"];
+$dependencies                       = $aggregateConfig["dependencies"];
 $dependencies['services']['config'] = $aggregateConfig;
 
 $container = new ServiceManager($dependencies);
