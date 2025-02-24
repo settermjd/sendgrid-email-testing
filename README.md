@@ -32,6 +32,7 @@ Then, copy _.env.example_ as _.env_, [create a SendGrid API key][sendgrid-create
 [composer]: https://getcomposer.org
 [mini-mezzio]: https://github.com/asgrim/mini-mezzio
 [php]: https://php.net
+[sendgrid-send-email-response-documentation]: https://www.twilio.com/docs/sendgrid/api-reference/how-to-use-the-sendgrid-v3-api/responses
 [send-email-sendgrid-docs]: https://www.twilio.com/docs/sendgrid/for-developers/sending-email/quickstart-php#complete-code-block
 [sendgrid-create-api-key]: https://www.twilio.com/docs/sendgrid/ui/account-and-settings/api-keys#creating-an-api-key
 [sendgrid-php-helper-library]: https://github.com/sendgrid/sendgrid-php
