@@ -14,7 +14,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use SendGrid;
 use SendGrid\Mail\Mail;
 use SendGrid\Mail\TypeException;
-use function array_diff;
 use function array_intersect;
 use function array_keys;
 use function count;
@@ -39,14 +38,19 @@ class SendEmailHandler implements RequestHandlerInterface
         $parsedBody = (array)$request->getParsedBody();
         $keys = array_intersect(self::REQUIRED_POST_PARAMS, array_keys($parsedBody));
         if (count($keys) !== count(self::REQUIRED_POST_PARAMS)) {
+            $missingPostElements = array_values(
+                array_diff(
+                    array_values(self::REQUIRED_POST_PARAMS),
+                    array_keys($parsedBody)
+                )
+            );
+            sort($missingPostElements, SORT_STRING);
             return new JsonResponse(
                 [
                     "Error" => "Missing configuration items.",
-                    "Missing configuration items." => array_diff(
-                        self::REQUIRED_POST_PARAMS,
-                        array_keys($parsedBody)
-                    ),
-                ]
+                    "Missing configuration items." => $missingPostElements,
+                ],
+                StatusCode::BAD_REQUEST
             );
         }
 
